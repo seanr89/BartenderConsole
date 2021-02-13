@@ -21,6 +21,42 @@ namespace barapp
             };
         }
 
+        public Action GetRecipe(string drinkName)
+        {
+            return _recipes[drinkName];
+        }
+
+        /// <summary>
+        /// Provide a collection of available drinks
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<string> GetAvailableDrinkNames()
+        {
+            return _recipes.Keys;
+        }
+
+        #region Private Methods
+
+        /// <summary>
+        /// Supporting alcohol age checks
+        /// </summary>
+        /// <param name="age"></param>
+        /// <param name="drink"></param>
+        private void HandleAgeCheck(int age, string drink)
+        {
+            if (age >= 18)
+            {
+                _outputProvider($"Here you go with your {drink}!");
+                return;
+            }
+            _outputProvider("Sorry but you are not old enough for alcohol!");
+        }
+
+        private void HandleInvalidAge()
+        {
+            _outputProvider("Sorry I don't understand that age");
+        }
+
         private void ServeOldFashioned()
         {
             _outputProvider("How old are you?");
@@ -46,33 +82,6 @@ namespace barapp
                 return;
             }
             HandleAgeCheck(age, "beer");
-        }
-
-        public Action GetRecipe(string drinkName)
-        {
-            return _recipes[drinkName];
-        }
-
-        public IEnumerable<string> GetAvailableDrinkNames()
-        {
-            return _recipes.Keys;
-        }
-
-        #region Private Methods
-
-        private void HandleAgeCheck(int age, string drink)
-        {
-            if (age >= 18)
-            {
-                _outputProvider($"Here you go with your {drink}!");
-                return;
-            }
-            _outputProvider("Sorry but you are not old enough for alcohol!");
-        }
-
-        private void HandleInvalidAge()
-        {
-            _outputProvider("Sorry I don't understand that age");
         }
 
         #endregion
