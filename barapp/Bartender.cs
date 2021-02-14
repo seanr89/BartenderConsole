@@ -15,18 +15,22 @@ namespace barapp
             _recipeBook = recipeBook;
         }
 
+        /// <summary>
+        /// Controls the data/console input for clients drinks order
+        /// </summary>
         public void AskForDrink()
         {
+            //Provide information of what the client can order
             _outputProvider($"What do you want to drink? ({string.Join(", ", _recipeBook.GetAvailableDrinkNames())})");
 
             var drink = _inputProvider() ?? string.Empty;
-
+            //Check reciper book and if not available tell the client
             if (!_recipeBook.GetAvailableDrinkNames().Contains(drink))
             {
                 _outputProvider($"Sorry we don't serve {drink} here");
                 return;
             }
-
+            //Get the respective recipe the follow its instructions!
             _recipeBook.GetRecipe(drink)();
         }
     }
