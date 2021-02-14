@@ -7,7 +7,6 @@ namespace barapp
     {
         private readonly Func<string> _inputProvider;
         private readonly Action<string> _outputProvider;
-
         private readonly Dictionary<string, Action> _recipes;
 
         public RecipeBook(Func<string> inputProvider, Action<string> outputProvider)
@@ -21,6 +20,11 @@ namespace barapp
             };
         }
 
+        /// <summary>
+        /// Returns the respective Action for a single drinks recipe
+        /// </summary>
+        /// <param name="drinkName">the name of the drink</param>
+        /// <returns>method Action</returns>
         public Action GetRecipe(string drinkName)
         {
             return _recipes[drinkName];
@@ -29,33 +33,13 @@ namespace barapp
         /// <summary>
         /// Provide a collection of available drinks
         /// </summary>
-        /// <returns></returns>
+        /// <returns>IEnumerable of drink names</returns>
         public IEnumerable<string> GetAvailableDrinkNames()
         {
             return _recipes.Keys;
         }
 
-        #region Private Methods
-
-        /// <summary>
-        /// Supporting alcohol age checks
-        /// </summary>
-        /// <param name="age"></param>
-        /// <param name="drink"></param>
-        private void HandleAgeCheck(int age, string drink)
-        {
-            if (age >= 18)
-            {
-                _outputProvider($"Here you go with your {drink}!");
-                return;
-            }
-            _outputProvider("Sorry but you are not old enough for alcohol!");
-        }
-
-        private void HandleInvalidAge()
-        {
-            _outputProvider("Sorry I don't understand that age");
-        }
+        #region Serve Methods
 
         private void ServeOldFashioned()
         {
@@ -82,6 +66,30 @@ namespace barapp
                 return;
             }
             HandleAgeCheck(age, "beer");
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Supporting alcohol age checks
+        /// </summary>
+        /// <param name="age"></param>
+        /// <param name="drink"></param>
+        private void HandleAgeCheck(int age, string drink)
+        {
+            if (age >= 18)
+            {
+                _outputProvider($"Here you go with your {drink}!");
+                return;
+            }
+            _outputProvider("Sorry but you are not old enough for alcohol!");
+        }
+
+        private void HandleInvalidAge()
+        {
+            _outputProvider("Sorry I don't understand that age");
         }
 
         #endregion
